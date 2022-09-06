@@ -15,7 +15,7 @@ const Character = sequelize.define('Characters', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    weigth: {
+    weight: {
         type: DataTypes.DECIMAL,
         allowNull: true
     },
