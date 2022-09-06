@@ -24,10 +24,16 @@ router.get('/:id', validateId ,async (req, res) => {
     res.status(404).send({status:'error', error:'Character not found'})
 })
 
-//get all characters
+//get all characters and filter
 router.get('/', async (req, res) => {
-    let characters = await characterService.getAll()
-    res.send(characters)
+    if(req.query){
+        let result = await characterService.filterProperty(req.query)
+        if(!result) return res.status(404).send({status:'error', error:'Not found'})
+        res.send(result)
+    }else{
+        let characters = await characterService.getAll()
+        res.send(characters)
+    }
 })
 
 //update character by id
@@ -45,6 +51,7 @@ router.delete('/:id', validateId, async (req,res)=>{
     if(result) return res.send('character delete successfully')
     res.status(500).send({status:'error', error:'Couldnt delete'})
 })
+
 
 router.get('/*:params',(req,res)=>{
     res.send({ error : -2, descripcion: `route '/api/products/${req.params[0]}' method 'GET' no implemented`})

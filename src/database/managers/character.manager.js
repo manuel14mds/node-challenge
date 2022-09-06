@@ -46,6 +46,15 @@ class CharacterManager {
         }
     }
 
+    filterProperty = async(filter)=>{
+        try{
+            let data = await Character.findAll({where:filter})
+            return data
+        }catch(err){
+            return false
+        }
+    }
+
 }
 
 export default CharacterManager
