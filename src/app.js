@@ -1,8 +1,12 @@
 import express from 'express'
 import sequelize from './database/database.js'
-import Users from './database/models/Users.model.js'
+
+//routes
+import authRouter from './routes/auth.router.js'
 
 const app = express()
+app.use(express.json())
+
 const server = app.listen(8080, async () => {
     console.log('listening on 8080 port')
     try {
@@ -13,20 +17,4 @@ const server = app.listen(8080, async () => {
     }
 })
 
-app.use(express.json())
-app.post('/users',async (req,res) => {
-    await Users.sync()
-    try {
-        await Users.create(req.body).then(()=>{
-            return res.send('user created')
-        })
-    } catch (error) {
-        res.send({ error : 'error', descripcion: 'User is not created'})
-    }
-})
-
-
-app.get('/users', async (req, res) => {
-    let users = await Users.findAll()
-    res.send(users)
-})
+app.use('/auth', authRouter)
