@@ -13,14 +13,9 @@ const Movie = sequelize.define('Movies', {
     rating: {
         type: DataTypes.INTEGER,
         allowNull: true
-    },
-    characters:{
-        type: DataTypes.ARRAY,
-        defaultValue: []
     }
 }, {
     tableName: 'Movies'
 });
-
 
 export default Movie

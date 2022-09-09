@@ -19,17 +19,13 @@ const Character = sequelize.define('Characters', {
         type: DataTypes.DECIMAL,
         allowNull: true
     },
-    history: {
+    biography: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    movies:{
-        type: DataTypes.INTEGER
     }
 }, {
     tableName: 'Characters'
 });
 
-//console.log(Users === sequelize.models.User)
 
 export default Character

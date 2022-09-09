@@ -19,6 +19,5 @@ const Users = sequelize.define('Users', {
     tableName: 'Users'
 });
 
-console.log(Users === sequelize.models.User)
 
 export default Users

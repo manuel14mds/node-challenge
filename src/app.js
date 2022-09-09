@@ -4,6 +4,7 @@ import sequelize from './database/database.js'
 //routes
 import authRouter from './routes/auth.router.js'
 import characterRouter from './routes/characters.router.js'
+import moviesRouter from './routes/movies.router.js'
 
 const app = express()
 app.use(express.json())
@@ -20,3 +21,4 @@ const server = app.listen(8080, async () => {
 
 app.use('/auth', authRouter)
 app.use('/characters', characterRouter)
+app.use('/movies', moviesRouter)

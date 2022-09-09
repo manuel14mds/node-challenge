@@ -20,6 +20,4 @@ const Gender = sequelize.define('Genders', {
     tableName: 'Genders'
 });
 
-console.log(Users === sequelize.models.User)
-
 export default Gender

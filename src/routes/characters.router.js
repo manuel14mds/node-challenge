@@ -53,8 +53,8 @@ router.delete('/:id', validateId, async (req,res)=>{
 })
 
 
-router.get('/*:params',(req,res)=>{
-    res.send({ error : -2, descripcion: `route '/api/products/${req.params[0]}' method 'GET' no implemented`})
+router.get('/*',(req,res)=>{
+    res.send({ error : -2, descripcion: `route '/characters/${req.params[0]}' method 'GET' no implemented`})
 })
 
 async function validateId(req,res,next){
