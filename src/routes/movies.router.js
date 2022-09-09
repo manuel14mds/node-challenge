@@ -1,7 +1,9 @@
 import { Router } from "express"
 import MoviesManager from '../database/managers/movies.manager.js'
+import GenderManager from '../database/managers/gender.manager.js'
 
 const moviesService = new MoviesManager()
+const genderService = new GenderManager()
 const router = Router()
 
 //get all movies
@@ -29,6 +31,31 @@ router.delete('/:id', validateId, async(req,res)=>{
     if(!result)res.status(500).send({status:'error', error:'Couldnt save'})
     res.send('deleted successfully')
 })
+
+
+router.get('/genders',async (req,res)=>{
+    let data = await genderService.getAll()
+    res.send(data)
+})
+router.post('/addGenders',async (req,res)=>{
+    let image = 'https://picsum.photos/200/300'
+    let genders = [
+        {name:'crime',image},{name:'comedy',image},{name:'animation',image},
+        {name:'tragedy',image},{name:'thriller',image},{name:'fantasy',image},
+        {name:'mystery',image},{name:'action',image},{name:'romance',image}
+    ]
+    try {
+        for (const element of genders) {
+            await genderService.create(element)
+        }
+        res.send('genders created successfully')
+    } catch (error) {
+        res.status(500).send({status:'error', error:'Couldnt save'})
+    }
+})
+
+
+
 
 
 router.get('/*',(req,res)=>{

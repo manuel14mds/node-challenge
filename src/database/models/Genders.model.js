@@ -10,11 +10,7 @@ const Gender = sequelize.define('Genders', {
     image: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    movies: {
-        type: DataTypes.ARRAY,
-        defaultValue:[]
-    },
+    }
 
 }, {
     tableName: 'Genders'

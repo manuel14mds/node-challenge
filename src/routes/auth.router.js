@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
     res.send('working on register')
 })
 
-router.get('/*:params',(req,res)=>{
-    res.send({ error : -2, descripcion: `route '/api/products/${req.params[0]}' method 'GET' no implemented`})
+router.get('/*',(req,res)=>{
+    res.send({ error : -2, descripcion: `route '/auth/${req.params[0]}' method 'GET' no implemented`})
 })
 export default router
