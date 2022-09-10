@@ -42,16 +42,12 @@ router.post('/addGenders',async (req,res)=>{
     let genders = [
         {name:'crime',image},{name:'comedy',image},{name:'animation',image},
         {name:'tragedy',image},{name:'thriller',image},{name:'fantasy',image},
-        {name:'mystery',image},{name:'action',image},{name:'romance',image}
-    ]
-    try {
-        for (const element of genders) {
-            await genderService.create(element)
-        }
-        res.send('genders created successfully')
-    } catch (error) {
-        res.status(500).send({status:'error', error:'Couldnt save'})
-    }
+        {name:'mystery',image},{name:'action',image},{name:'romance',image}]
+
+    let result = await genderService.createBulk(genders)
+    if(!result) return res.status(500).send({status:'error', error:'Couldnt save'})
+    res.send('genders created successfully')
+
 })
 
 

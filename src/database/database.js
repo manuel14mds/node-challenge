@@ -3,9 +3,17 @@ import __dirname from '../utils.js';
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: __dirname+'/database.sqlite'
+    storage: __dirname + '/database.sqlite'
 });
 //const sequelize = new Sequelize('sqlite::memory:');
+(async function initial() {
+    try {
+        await sequelize.sync();
+
+    } catch (error) {
+        console.log(error);
+    }
+})()
 
 
 export default sequelize

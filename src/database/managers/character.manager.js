@@ -1,4 +1,5 @@
-import Character from '../models/Characters.model.js'
+//import Character from '../models/Characters.model.js'
+import {Character} from '../models/index.js'
 
 class CharacterManager {
     constructor() {

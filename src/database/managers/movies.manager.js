@@ -1,18 +1,19 @@
-import Movies from '../models/Movies.model.js'
+//import Movie from '../models/Movie.model.js'
+import {Movie} from '../models/index.js'
 
-class MoviesManager {
+class MovieManager {
     constructor (){
     }
     getAll = async()=>{
-        await Movies.sync()
-        let result = await Movies.findAll()
+        await Movie.sync()
+        let result = await Movie.findAll()
         return result
     }
 
     create = async(data)=>{
-        await Movies.sync()
+        await Movie.sync()
         try {
-            await Movies.create(data)
+            await Movie.create(data)
             return true
         } catch (error) {
             return false
@@ -21,7 +22,7 @@ class MoviesManager {
 
     getById =  async(id)=>{
         try {
-            let result = await Movies.findOne({where:{id:id}})
+            let result = await Movie.findOne({where:{id:id}})
             return result
         } catch (error) {
             return false
@@ -30,7 +31,7 @@ class MoviesManager {
 
     update =  async (id, newData) =>{
         try {
-            await Movies.update(newData, {where: {id:id}})
+            await Movie.update(newData, {where: {id:id}})
             return true
         } catch (error) {
             return false
@@ -38,7 +39,7 @@ class MoviesManager {
     }
     delete = async (id)=>{
         try {
-            await Movies.destroy({where:{id:id}})
+            await Movie.destroy({where:{id:id}})
             return true
         } catch (error) {
             return false
@@ -47,4 +48,4 @@ class MoviesManager {
 
 }
 
-export default MoviesManager
+export default MovieManager

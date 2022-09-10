@@ -1,18 +1,19 @@
-import Genders from '../models/Genders.model.js'
+//import Gender from '../models/Gender.model.js'
+import {Gender} from '../models/index.js'
 
 class CharacterManager {
     constructor() {
     }
     getAll = async()=>{
-        await Genders.sync()
-        let result = await Genders.findAll()
+        await Gender.sync()
+        let result = await Gender.findAll()
         return result
     }
 
     create = async(data)=>{
-        await Genders.sync()
+        await Gender.sync()
         try {
-            await Genders.create(data)
+            await Gender.create(data)
             return true
         } catch (error) {
             return false
@@ -21,7 +22,7 @@ class CharacterManager {
 
     getById =  async(id)=>{
         try {
-            let result = await Genders.findOne({where:{id:id}})
+            let result = await Gender.findOne({where:{id:id}})
             return result
         } catch (error) {
             return false
@@ -30,7 +31,7 @@ class CharacterManager {
 
     update =  async (id, newData) =>{
         try {
-            await Genders.update(newData, {where: {id:id}})
+            await Gender.update(newData, {where: {id:id}})
             return true
         } catch (error) {
             return false
@@ -39,17 +40,17 @@ class CharacterManager {
 
     delete = async (id)=>{
         try {
-            await Genders.destroy({where:{id:id}})
+            await Gender.destroy({where:{id:id}})
             return true
         } catch (error) {
             return false
         }
     }
 
-    filterProperty = async(filter)=>{
+    createBulk = async(list)=>{
         try{
-            let data = await Genders.findAll({where:filter})
-            return data
+            await Gender.bulkCreate()
+            return true
         }catch(err){
             return false
         }
