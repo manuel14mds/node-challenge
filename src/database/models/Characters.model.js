@@ -2,7 +2,6 @@ import { DataTypes } from 'sequelize'
 import sequelize from '../database.js'
 
 const Character = sequelize.define('Characters', {
-
     image: {
         type: DataTypes.STRING,
         allowNull: true
@@ -22,10 +21,14 @@ const Character = sequelize.define('Characters', {
     biography: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    movies:{
+        type:DataTypes.JSON,
+        defaultValue:[]
     }
 }, {
     tableName: 'Characters'
-});
+})
 
 
 export default Character

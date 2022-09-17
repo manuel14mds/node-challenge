@@ -6,7 +6,7 @@ const sequelize = new Sequelize({
     storage: __dirname + '/database.sqlite'
 });
 //const sequelize = new Sequelize('sqlite::memory:');
-(async function initial() {
+(async function test() {
     try {
         await sequelize.sync();
 

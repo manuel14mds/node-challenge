@@ -13,6 +13,14 @@ const Movie = sequelize.define('Movies', {
     rating: {
         type: DataTypes.INTEGER,
         allowNull: true
+    },
+    genre:{
+        type:DataTypes.INTEGER,
+        allowNull: true
+    },
+    characters:{
+        type:DataTypes.JSON,
+        defaultValue:[]
     }
 }, {
     tableName: 'Movies'

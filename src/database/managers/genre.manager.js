@@ -1,19 +1,18 @@
-//import Gender from '../models/Gender.model.js'
-import {Gender} from '../models/index.js'
+import {Genre} from '../models/index.js'
 
-class CharacterManager {
+class GenreManager {
     constructor() {
     }
     getAll = async()=>{
-        await Gender.sync()
-        let result = await Gender.findAll()
+        await Genre.sync()
+        let result = await Genre.findAll()
         return result
     }
 
     create = async(data)=>{
-        await Gender.sync()
+        await Genre.sync()
         try {
-            await Gender.create(data)
+            await Genre.create(data)
             return true
         } catch (error) {
             return false
@@ -22,7 +21,7 @@ class CharacterManager {
 
     getById =  async(id)=>{
         try {
-            let result = await Gender.findOne({where:{id:id}})
+            let result = await Genre.findOne({where:{id:id}})
             return result
         } catch (error) {
             return false
@@ -31,7 +30,7 @@ class CharacterManager {
 
     update =  async (id, newData) =>{
         try {
-            await Gender.update(newData, {where: {id:id}})
+            await Genre.update(newData, {where: {id:id}})
             return true
         } catch (error) {
             return false
@@ -40,7 +39,7 @@ class CharacterManager {
 
     delete = async (id)=>{
         try {
-            await Gender.destroy({where:{id:id}})
+            await Genre.destroy({where:{id:id}})
             return true
         } catch (error) {
             return false
@@ -49,7 +48,7 @@ class CharacterManager {
 
     createBulk = async(list)=>{
         try{
-            await Gender.bulkCreate()
+            await Genre.bulkCreate(list)
             return true
         }catch(err){
             return false
@@ -58,4 +57,4 @@ class CharacterManager {
 
 }
 
-export default CharacterManager
+export default GenreManager

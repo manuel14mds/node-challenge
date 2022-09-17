@@ -31,8 +31,8 @@ class MovieManager {
 
     update =  async (id, newData) =>{
         try {
-            await Movie.update(newData, {where: {id:id}})
-            return true
+            let movie = await Movie.update(newData, {where: {id:id}})
+            return movie
         } catch (error) {
             return false
         }

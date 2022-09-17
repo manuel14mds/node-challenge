@@ -2,7 +2,7 @@ import {DataTypes } from 'sequelize'
 import sequelize from '../database.js'
 
 const Users = sequelize.define('Users', {
-    // Model attributes are defined here
+
     userName: {
         type: DataTypes.STRING,
         allowNull: false
@@ -15,9 +15,10 @@ const Users = sequelize.define('Users', {
         type: DataTypes.STRING,
         allowNull: false
     }
+
 }, {
     tableName: 'Users'
-});
+})
 
 
 export default Users

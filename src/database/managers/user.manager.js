@@ -1,19 +1,19 @@
-import {Character} from '../models/index.js'
+import {User} from '../models/index.js'
 
-class CharacterManager {
+class UserManager {
     constructor() {
     }
     getAll = async()=>{
-        await Character.sync()
-        let result = await Character.findAll()
+        await User.sync()
+        let result = await User.findAll()
         return result
     }
 
     create = async(data)=>{
-        await Character.sync()
+        await User.sync()
         try {
-            let character = await Character.create(data)
-            return character
+            await User.create(data)
+            return true
         } catch (error) {
             return false
         }
@@ -21,7 +21,7 @@ class CharacterManager {
 
     getById =  async(id)=>{
         try {
-            let result = await Character.findOne({where:{id:id}})
+            let result = await User.findOne({where:{id:id}})
             return result
         } catch (error) {
             return false
@@ -30,18 +30,16 @@ class CharacterManager {
 
     update =  async (id, newData) =>{
         try {
-
-            await Character.update(newData, {where: {id:id}})
+            await User.update(newData, {where: {id:id}})
             return true
         } catch (error) {
-
             return false
         }
     }
 
     delete = async (id)=>{
         try {
-            await Character.destroy({where:{id:id}})
+            await User.destroy({where:{id:id}})
             return true
         } catch (error) {
             return false
@@ -50,7 +48,7 @@ class CharacterManager {
 
     filterProperty = async(filter)=>{
         try{
-            let data = await Character.findAll({where:filter})
+            let data = await User.findAll({where:filter})
             return data
         }catch(err){
             return false
@@ -59,4 +57,4 @@ class CharacterManager {
 
 }
 
-export default CharacterManager
+export default UserManager
