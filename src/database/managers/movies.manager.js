@@ -1,4 +1,3 @@
-//import Movie from '../models/Movie.model.js'
 import {Movie} from '../models/index.js'
 
 class MovieManager {
@@ -27,6 +26,16 @@ class MovieManager {
         } catch (error) {
             return false
         }
+    }
+    getOrder = async(order)=>{
+        let data = await Movie.findAll({order:[['title', order]]})
+        console.log(data)
+        return data
+    }
+
+    GetByProperty = async (property)=>{
+        let data = await Movie.findAll({where:property})
+        return data
     }
 
     update =  async (id, newData) =>{

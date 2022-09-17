@@ -8,11 +8,24 @@ const moviesService = new MoviesManager()
 const genreService = new GenreManager()
 const router = Router()
 
-//get all movies
+//get all movies and filter. Require a filter by params
 // http://localhost:8080/movies
+// http://localhost:8080/movies?title=raw
+// http://localhost:8080/movies?genre=1
+// http://localhost:8080/?order=ASC / DESC
 router.get('/',async(req,res)=>{
-    let data = await moviesService.getAll()
-    res.send(data)
+    if(req.query){
+        if(req.query.order && (req.query.order == 'ASC' || req.query.order == 'DESC')){
+            let result = await moviesService.getOrder(req.query.order)
+            return res.send(result)
+        }else if(req.query.title || req.query.genre){
+            let info = await moviesService.GetByProperty(req.query)
+            return res.send(info)
+        }
+    }else{
+        let data = await moviesService.getAll()
+        res.send(data)
+    }
 })
 
 //add a new movie, Require movie object by req.body
