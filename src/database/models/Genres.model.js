@@ -10,6 +10,10 @@ const Genre = sequelize.define('Genres', {
     image: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    movies:{
+        type:DataTypes.JSON,
+        defaultValue:[]
     }
 
 }, {

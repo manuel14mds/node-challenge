@@ -8,12 +8,38 @@ class CharacterManager {
         let result = await Character.findAll()
         return result
     }
+    getCharacters = async()=>{
+        await Character.sync()
+        let result = await Character.findAll({
+            attributes: ['name', 'image']
+        })
+        return result
+    }
+
+    getCharactersMovies = async(movieId)=>{
+        await Character.sync()
+        let result = await Character.findAll()
+        let characters = []
+        for(const character of result){
+            for(const item of character.movies){
+                if(item === movieId){
+                    characters.push({
+                        id:character.id,
+                        name:character.name,
+                        image:character.image
+                    })
+                }
+            }
+        }
+        return characters
+    }
+
 
     create = async(data)=>{
         await Character.sync()
         try {
             let character = await Character.create(data)
-            return character
+            return character.id
         } catch (error) {
             return false
         }

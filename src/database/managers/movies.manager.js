@@ -8,12 +8,20 @@ class MovieManager {
         let result = await Movie.findAll()
         return result
     }
+    getMovies = async()=>{
+        await Movie.sync()
+        let result = await Movie.findAll({
+            attributes: ['title', 'image', 'createdAt']
+        })
+        return result
+    }
+    
 
     create = async(data)=>{
         await Movie.sync()
         try {
-            await Movie.create(data)
-            return true
+            let result = await Movie.create(data)
+            return result.id
         } catch (error) {
             return false
         }
@@ -29,7 +37,6 @@ class MovieManager {
     }
     getOrder = async(order)=>{
         let data = await Movie.findAll({order:[['title', order]]})
-        console.log(data)
         return data
     }
 
@@ -46,6 +53,7 @@ class MovieManager {
             return false
         }
     }
+    
     delete = async (id)=>{
         try {
             await Movie.destroy({where:{id:id}})

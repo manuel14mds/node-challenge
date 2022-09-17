@@ -10,7 +10,7 @@ const router = Router()
 // http://localhost:8080/characters
 router.post('/', async(req,res)=>{
     let result = await characterService.create(req.body)
-    if(req.body.movies && req.body.movies.length != 0) await relationCharacterToMovie(req.params.id, req.body)
+    if(req.body.movies && req.body.movies.length != 0) await relationCharacterToMovie(result, req.body)
     if(result) return res.send('character created successfully')
     res.status(500).send({status:'error', error:'Couldnt save'})
 })
@@ -32,19 +32,17 @@ router.get('/:id', validateId ,async (req, res) => {
 // http://localhost:8080/characters?age=45
 // http://localhost:8080/characters?movies=2
 router.get('/', async (req, res) => {
-    if(req.query){
-        if(req.query.movies){
-            let exist = await moviesService.getById(req.query.movies)
-            if(!exist)return res.status(404).send({status:'error', error:'Movie not found'})
-            let result = await characterService.getByMovie(req.query.movies)
-            res.send(result)
-        }else{
-            let result = await characterService.filterProperty(req.query)
-            if(!result) return res.status(404).send({status:'error', error:'Not found'})
-            res.send(result)
-        }
+    if(req.query.movies){
+        let exist = await moviesService.getById(req.query.movies)
+        if(!exist)return res.status(404).send({status:'error', error:'Movie not found'})
+        let result = await characterService.getCharactersMovies(parseInt(req.query.movies))
+        res.send(result)
+    }else if(req.query.age || req.query.name){
+        let result = await characterService.filterProperty(req.query)
+        if(!result) return res.status(404).send({status:'error', error:'Not found'})
+        res.send(result)
     }else{
-        let characters = await characterService.getAll()
+        let characters = await characterService.getCharacters()
         res.send(characters)
     }
 })
@@ -97,7 +95,7 @@ const relationCharacterToMovie = async (characterId, newData) => {
     let movie
     for(const item of newData.movies){
         movie = await moviesService.getById(item)
-        if(!movie.characters.includes(item)){
+        if(!movie.characters.includes(characterId)){
             movie.characters.push(characterId)
             await moviesService.update(movie.id, {characters:movie.characters})
         }

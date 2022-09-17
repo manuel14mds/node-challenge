@@ -14,17 +14,16 @@ const router = Router()
 // http://localhost:8080/movies?genre=1
 // http://localhost:8080/?order=ASC / DESC
 router.get('/',async(req,res)=>{
-    if(req.query){
-        if(req.query.order && (req.query.order == 'ASC' || req.query.order == 'DESC')){
-            let result = await moviesService.getOrder(req.query.order)
-            return res.send(result)
-        }else if(req.query.title || req.query.genre){
-            let info = await moviesService.GetByProperty(req.query)
-            return res.send(info)
-        }
+
+    if(req.query.order && (req.query.order == 'ASC' || req.query.order == 'DESC')){
+        let result = await moviesService.getOrder(req.query.order)
+        return res.send(result)
+    }else if(req.query.title || req.query.genre){
+        let info = await moviesService.GetByProperty(req.query)
+        return res.send(info)
     }else{
-        let data = await moviesService.getAll()
-        res.send(data)
+    let data = await moviesService.getMovies()
+    res.send(data)
     }
 })
 
@@ -32,9 +31,9 @@ router.get('/',async(req,res)=>{
 // http://localhost:8080/movies
 router.post('/',async(req,res)=>{
     let result = await moviesService.create(req.body)
-    if(req.body.characters && req.body.characters.length != 0) await relationMovieToCharacter(req.params.id, req.body)
-
     if(!result)res.status(500).send({status:'error', error:'Couldnt save'})
+    if(req.body.characters && req.body.characters.length != 0) await relationMovieToCharacter(result, req.body)
+    if(req.body.genre) await relationMovieGenre(result, req.body)
     res.send('saved successfully')
 })
 
@@ -42,8 +41,9 @@ router.post('/',async(req,res)=>{
 // http://localhost:8080/movies/2
 router.put('/:id', validateId, async(req,res)=>{
     let result = await moviesService.update(req.params.id, req.body)
-    if(req.body.characters && req.body.characters.length != 0) await relationMovieToCharacter(req.params.id, req.body)
     if(!result)res.status(500).send({status:'error', error:'Couldnt update'})
+    if(req.body.characters && req.body.characters.length != 0) await relationMovieToCharacter(req.params.id, req.body)
+    if(req.body.genre) await relationMovieGenre(req.params.id, req.body)
     res.send('updated successfully')
 })
 
@@ -86,7 +86,7 @@ router.post('/addGenres',async (req,res)=>{
     let image = 'https://picsum.photos/200/300'
     let genres = [
         {name:'crime',image},{name:'comedy',image},{name:'animation',image},
-        {name:'tragedy',image},{name:'thriller',image},{name:'fantasy',image},
+        {name:'tragedy',image},{name:'thriller',image},{name:'adventure',image},
         {name:'mystery',image},{name:'action',image},{name:'romance',image}]
     let result = await genreService.createBulk(genres)
     if(!result) return res.status(500).send({status:'error', error:'Couldnt save'})
@@ -113,7 +113,7 @@ const relationMovieToCharacter = async (movieId, newData) => {
     let character
     for(const item of newData.characters){
         character = await characterService.getById(item)
-        if(!character.movies.includes(item)){
+        if(!character.movies.includes(movieId)){
             character.movies.push(movieId)
             await characterService.update(character.id, {movies:character.movies})
         }
@@ -125,11 +125,21 @@ const movieDetail = async (movieId) => {
     let character ={}
     for(const item of movie.characters){
         character = await characterService.getById(item)
-        characterList.push(character)
+        characterList.push({
+            name:character.name,
+            image:character.image
+        })
     }
     movie.characters = characterList
+    let genre = await genreService.getById(movie.genre)
+    if(genre) movie.genre = genre.name
     return movie
 }
 
+const relationMovieGenre = async(movieId, newData)=>{
+    let genre = await genreService.getById(newData.genre)
+    genre.movies.push(movieId)
+    await genreService.update(genre.id, {movies:genre.movies})
+}
 
 export default router
